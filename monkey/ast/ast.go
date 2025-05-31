@@ -21,6 +21,34 @@ type Expression interface {
 	expressionNode()
 }
 
+type ArrayLiteral struct {
+	Token    token.Token  // the '[' token
+	Elements []Expression // Elements of the array
+}
+
+func (al *ArrayLiteral) expressionNode() {
+
+}
+
+func (al *ArrayLiteral) TokenLiteral() string {
+	return al.Token.Literal
+}
+
+func (al *ArrayLiteral) String() string {
+	var out bytes.Buffer
+
+	elements := make([]string, 0, len(al.Elements))
+	for _, elem := range al.Elements {
+		elements = append(elements, elem.String())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(elements, ", "))
+	out.WriteString("]")
+
+	return out.String()
+}
+
 type StringLiteral struct {
 	Token token.Token // the token.STRING token
 	Value string
