@@ -21,6 +21,34 @@ type Expression interface {
 	expressionNode()
 }
 
+type HashLiteral struct {
+	Token token.Token               // the '{' token
+	Pairs map[Expression]Expression // Map of key-value pairs
+}
+
+func (hl *HashLiteral) expressionNode() {
+
+}
+
+func (hl *HashLiteral) TokenLiteral() string {
+	return hl.Token.Literal
+}
+
+func (hl *HashLiteral) String() string {
+	var out bytes.Buffer
+
+	pairs := make([]string, 0, len(hl.Pairs))
+	for key, value := range hl.Pairs {
+		pairs = append(pairs, key.String()+":"+value.String())
+	}
+
+	out.WriteString("{")
+	out.WriteString(strings.Join(pairs, ", "))
+	out.WriteString("}")
+
+	return out.String()
+}
+
 type IndexExpression struct {
 	Token token.Token
 	Left  Expression
